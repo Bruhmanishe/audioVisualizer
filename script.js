@@ -22,11 +22,11 @@ window.onload = () => {
       audio1.src = URL.createObjectURL(files[0]);
       audio1.load();
       audio1.play();
-      
+
       let img = new Image();
       img.src = "img/anarchy.png";
-      img.width = 367;
-      img.height = 365;
+      img.width = 370;
+      img.height = 370;
 
       const audioCtx = new AudioContext();
       audioSource = audioCtx.createMediaElementSource(audio1);
@@ -39,42 +39,46 @@ window.onload = () => {
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
-      const barWidth = audioCanvas.width / bufferLength;
+      const barWidth = audioCanvas.width / bufferLength + 2;
       let barHeight;
-
       let x;
 
       function animate() {
         canvasCtx.clearRect(0, 0, audioCanvas.width, audioCanvas.height);
         analyser.getByteFrequencyData(dataArray);
         x = 0;
-        for (let i = 0; i < bufferLength; i++) {
-          barHeight = dataArray[i] * 4;
-          canvasCtx.fillStyle = "red";
-          canvasCtx.fillRect(
-            x,
-            audioCanvas.height - barHeight,
-            barWidth,
-            barHeight
-          );
-          x += barWidth - 3;
-        }
-        canvasCtx.beginPath();
-        canvasCtx.drawImage(
-          img,
-          audioCanvas.width / 2 -
-            img.width / 2 -
-            img.width * (dataArray[1] / 3000),
-          audioCanvas.height / 2 -
-            img.height / 2 -
-            img.height * (dataArray[1] / 3000),
-          img.width * (1 + dataArray[1] / 3000),
-          img.height * (1 + dataArray[1] / 3000)
-        );
+
+        drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray);
+
+        drawImage(img, dataArray, canvasCtx, audioCanvas);
         requestAnimationFrame(animate);
       }
-
       animate();
     };
   });
 };
+
+function drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray) {
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i] * 4;
+    const red = i + barHeight + (Math.random() * (10 - -10) - -10);
+
+    canvasCtx.fillStyle = "rgba(" + red + "," + 0 + "," + 0 + ")";
+    canvasCtx.fillRect(x, audioCanvas.height - barHeight, barWidth, barHeight);
+    x += barWidth - 1;
+  }
+}
+
+function drawImage(img, dataArray, canvasCtx, canvas) {
+  canvasCtx.beginPath();
+  canvasCtx.globalAlpha = dataArray[1] / 250;
+
+  canvasCtx.drawImage(
+    img,
+    canvas.width / 2 - img.width / 2 - img.width * (dataArray[1] / 3000),
+    canvas.height / 2 - img.height / 2 - img.height * (dataArray[1] / 3000),
+    img.width * (1 + dataArray[1] / 3000),
+    img.height * (1 + dataArray[1] / 3000)
+  );
+  canvasCtx.closePath();
+}
