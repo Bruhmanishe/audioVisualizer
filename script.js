@@ -51,6 +51,13 @@ window.onload = () => {
 
           drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray);
 
+          drawCircleVisualizerBlack(
+            bufferLength,
+            x,
+            barWidth,
+            barHeight,
+            dataArray
+          );
           drawImage(img, dataArray, canvasCtx, audioCanvas);
         }, 30);
 
@@ -69,6 +76,64 @@ function drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray) {
     canvasCtx.fillStyle = "rgba(" + red + "," + 0 + "," + 0 + ")";
     canvasCtx.fillRect(x, audioCanvas.height - barHeight, barWidth, barHeight);
     x += barWidth - 1;
+  }
+}
+
+function drawCircleVisualizerBlack(
+  bufferLength,
+  x,
+  barWidth,
+  barHeight,
+  dataArray
+) {
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i] * 1.5;
+    canvasCtx.save();
+    canvasCtx.translate(audioCanvas.width / 2, audioCanvas.height / 2.25);
+    canvasCtx.rotate(-((i * (Math.PI * 2)) / bufferLength) / 2);
+
+    const white = i + barHeight + (Math.random() * (10 - -10) - -10);
+    canvasCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + ")";
+    canvasCtx.fillRect(0, 0, barWidth, barHeight);
+    x += barWidth - 1;
+
+    canvasCtx.restore();
+  }
+
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i] * 1.5;
+    canvasCtx.save();
+    canvasCtx.translate(audioCanvas.width / 2, audioCanvas.height / 2.25);
+    canvasCtx.rotate((i * (Math.PI * 2)) / bufferLength / 2);
+
+    const white = i + barHeight + (Math.random() * (10 - -10) - -10);
+    canvasCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + ")";
+    canvasCtx.fillRect(0, 0, barWidth, barHeight);
+    x += barWidth - 1;
+
+    canvasCtx.restore();
+  }
+}
+
+function drawCircleVisualizerRed(
+  bufferLength,
+  x,
+  barWidth,
+  barHeight,
+  dataArray
+) {
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i] * 4;
+    canvasCtx.save();
+    canvasCtx.translate(audioCanvas.width / 2, audioCanvas.height / 2);
+    canvasCtx.rotate(i + (Math.PI * 2) / bufferLength);
+
+    const white = i + barHeight + (Math.random() * (10 - -10) - -10);
+    canvasCtx.fillStyle = "rgba(" + 255 + "," + 0 + "," + 0 + ")";
+    canvasCtx.fillRect(x, audioCanvas.height - barHeight, barWidth, barHeight);
+    x += barWidth - 1;
+
+    canvasCtx.restore();
   }
 }
 
