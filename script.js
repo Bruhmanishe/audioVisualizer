@@ -71,14 +71,14 @@ function drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray) {
 
 function drawImage(img, dataArray, canvasCtx, canvas) {
   canvasCtx.beginPath();
-  canvasCtx.globalAlpha = dataArray[1] / 250;
+  canvasCtx.globalAlpha = dataArray[10] / 250;
 
   canvasCtx.drawImage(
     img,
     canvas.width / 2 - img.width / 2 - img.width * (dataArray[1] / 3000),
     canvas.height / 2 - img.height / 2 - img.height * (dataArray[1] / 3000),
-    img.width * (1 + dataArray[1] / 3000),
-    img.height * (1 + dataArray[1] / 3000)
+    img.width * (1 + dataArray[10] / 3000),
+    img.height * (1 + dataArray[10] / 3000)
   );
   canvasCtx.closePath();
 }
