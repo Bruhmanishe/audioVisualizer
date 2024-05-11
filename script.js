@@ -44,14 +44,17 @@ window.onload = () => {
       let x;
 
       function animate() {
-        canvasCtx.clearRect(0, 0, audioCanvas.width, audioCanvas.height);
-        analyser.getByteFrequencyData(dataArray);
-        x = 0;
+        setInterval(() => {
+          canvasCtx.clearRect(0, 0, audioCanvas.width, audioCanvas.height);
+          analyser.getByteFrequencyData(dataArray);
+          x = 0;
 
-        drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray);
+          drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray);
 
-        drawImage(img, dataArray, canvasCtx, audioCanvas);
-        requestAnimationFrame(animate);
+          drawImage(img, dataArray, canvasCtx, audioCanvas);
+        }, 30);
+
+        // requestAnimationFrame(animate);
       }
       animate();
     };
@@ -71,7 +74,7 @@ function drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray) {
 
 function drawImage(img, dataArray, canvasCtx, canvas) {
   canvasCtx.beginPath();
-  canvasCtx.globalAlpha = dataArray[10] / 250;
+  canvasCtx.globalAlpha = dataArray[10] / 190;
 
   canvasCtx.drawImage(
     img,
