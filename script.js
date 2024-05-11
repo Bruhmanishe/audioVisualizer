@@ -20,14 +20,14 @@ window.onload = () => {
       const files = this.files;
       const audio1 = document.getElementById("audio1");
       audio1.src = URL.createObjectURL(files[0]);
-
+      audio1.load();
+      audio1.play();
+      
       let img = new Image();
       img.src = "img/anarchy.png";
       img.width = 367;
       img.height = 365;
 
-      // audio1.src = "audio/Products.mp3";
-      audio1.play();
       const audioCtx = new AudioContext();
       audioSource = audioCtx.createMediaElementSource(audio1);
       analyser = audioCtx.createAnalyser();
